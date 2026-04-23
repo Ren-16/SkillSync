@@ -25,7 +25,9 @@ import IndustryCertification from './Certifications/IndustryCertifications';
 import Publications from './Publications/Publications';
 import EducationalAttainment from './EducationalAttainment/EducationalAttainment';
 import ScoringConfigPage from './ScoringWeight/ScoringConfigPage';
-import DepartmentChairDashboard from './basicPages/FacultyMatch/DepartmentChairDashboard';
+// import DepartmentChairDashboard from './basicPages/FacultyMatch/DepartmentChairDashboard';
+import FacultyRanking from './basicPages/FacultyMatch/FacultyRanking';
+import SkillGapAnalysis from './basicPages/FacultyMatch/DepartmentChairDashboard';
 
 
 // =================== SIDEBAR ===================
@@ -156,6 +158,16 @@ function Sidebar({ collapsed, toggleSidebar }) {
                           className={`nav-link ${location.pathname === "/deptdash" ? "active" : ""} text-black`}
                         >
                           Chair Dashboard
+                        </Link>
+                      </li>
+
+                      
+                      <li className="nav-item">
+                        <Link
+                          to="/facultyranking"
+                          className={`nav-link ${location.pathname === "/facultyranking" ? "active" : ""} text-black`}
+                        >
+                          Faculty Ranking
                         </Link>
                       </li>
                       
@@ -289,10 +301,19 @@ function AppLayout() {
             />
 
             <Route
+              path="/facultyranking"
+              element={
+                <ChairRoute>
+                  <FacultyRanking />
+                </ChairRoute>
+              }
+            />
+
+            <Route
               path="/deptdash"
               element={
                 <ChairRoute>
-                  <DepartmentChairDashboard />
+                  <SkillGapAnalysis />
                 </ChairRoute>
               }
             />
