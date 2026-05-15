@@ -1,14 +1,351 @@
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import {
+//   BrowserRouter as Router,
+//   Routes,
+//   Route,
+//   Link,
+//   useLocation,
+//   useNavigate
+// } from "react-router-dom";
+// import { Suspense, useEffect, useState } from 'react';
+
+// import { supabase } from "./supabaseClient";
+
+// // PAGES
+// import SignUp from './user/Signup';
+// import Login from './user/Login';
+// import ProfilePage from './basicPages/Profile';
+// import './index.css';
+// import Home from './basicPages/FacultyMatch/Home';
+// import SkillCategory from './basicPages/SkillCategory';
+// import SkillList from './basicPages/SkillList';
+// import Seminars from './Certifications/Seminars';
+// import TrainingsWorkshop from './Certifications/TrainingWorkshop';
+// import IndustryCertification from './Certifications/IndustryCertifications';
+// import Publications from './Publications/Publications';
+// import EducationalAttainment from './EducationalAttainment/EducationalAttainment';
+// import ScoringConfigPage from './ScoringWeight/ScoringConfigPage';
+// // import DepartmentChairDashboard from './basicPages/FacultyMatch/DepartmentChairDashboard';
+// import FacultyRanking from './basicPages/FacultyMatch/FacultyRanking';
+// import SkillGapAnalysis from './basicPages/FacultyMatch/DepartmentChairDashboard';
+
+
+// // =================== SIDEBAR ===================
+// function Sidebar({ collapsed, toggleSidebar }) {
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   const [role, setRole] = useState(null);
+
+//   useEffect(() => {
+//     fetchUserRole();
+//   }, []);
+
+//   const fetchUserRole = async () => {
+//     const { data: { user } } = await supabase.auth.getUser();
+//     if (!user) return;
+
+//     const { data, error } = await supabase
+//       .from("profiles")
+//       .select("role")
+//       .eq("id", user.id)
+//       .single();
+
+//     if (!error) {
+//       setRole(data.role);
+//     }
+//   };
+
+//   const handleLogout = async () => {
+//     await supabase.auth.signOut();
+//     navigate("/login", { replace: true });
+//   };
+
+//   const menuItems = [
+//     { name: "Home", path: "/home" },
+//     { name: "Educational Attainment", path: "/educ" },
+//     { name: "Seminar", path: "/seminars" },
+//     { name: "Training/Workshop", path: "/training" },
+//     { name: "Industry Certification", path: "/industrycert" },
+//     { name: "Publication", path: "/publications" },
+//     { name: "Profile", path: "/profile" }
+//   ];
+
+//   return (
+//     <div
+//       className={`d-flex flex-column sidebar ${collapsed ? "collapsed" : ""}`}
+//     >
+//       {/* LOGO / BRAND */}
+//       <div className="sidebar-brand d-flex align-items-center justify-content-center py-4">
+//         {!collapsed ? <h5 className="mb-0 fw-bold">SkillSync</h5> : <span>FP</span>}
+//       </div>
+
+//       {/* MENU */}
+//       <ul className="nav flex-column">
+//         {menuItems.map((item) => (
+//           <li key={item.path} className="nav-item">
+//             <Link
+//               to={item.path}
+//               className={`nav-link d-flex align-items-center ${
+//                 location.pathname === item.path ? "active" : ""
+//               }`}
+//             >
+              
+//               {!collapsed && <span className="ms-2">{item.name}</span>}
+//             </Link>
+//           </li>
+//         ))}
+
+//         {role === "chair" && !collapsed && (
+//           <li className="nav-item mt-3">
+            
+//             <div className="accordion" id="chairAccordion">
+              
+//               <div className="accordion-item border-0">
+                
+//                 {/* ACCORDION HEADER */}
+//                 <h2 className="accordion-header">
+//                   <button
+//                     className="accordion-button collapsed py-2"
+//                     type="button"
+//                     data-bs-toggle="collapse"
+//                     data-bs-target="#chairMenu"
+//                   >
+//                     Chair Functions
+//                   </button>
+//                 </h2>
+
+//                 {/* ACCORDION BODY */}
+//                 <div
+//                   id="chairMenu"
+//                   className="accordion-collapse collapse"
+//                   data-bs-parent="#chairAccordion"
+//                 >
+//                   <div className="accordion-body p-0">
+
+//                     <ul className="nav flex-column">
+
+//                       {/* <li className="nav-item">
+//                         <Link
+//                           to="/skillCategory"
+//                           className={`nav-link ${location.pathname === "/skillCategory" ? "active" : ""} text-black`}
+//                         >
+//                           Skill Category
+//                         </Link>
+//                       </li> */}
+
+//                       <li className="nav-item">
+//                         <Link
+//                           to="/indskill"
+//                           className={`nav-link ${location.pathname === "/indskill" ? "active" : ""} text-black`}
+//                         >
+//                           Skills
+//                         </Link>
+//                       </li>
+
+//                       <li className="nav-item">
+//                         <Link
+//                           to="/scoring-config"
+//                           className={`nav-link ${location.pathname === "/scoring-config" ? "active" : ""} text-black`}
+//                         >
+//                           Scoring Weight
+//                         </Link>
+//                       </li>
+
+
+//                       <li className="nav-item">
+//                         <Link
+//                           to="/deptdash"
+//                           className={`nav-link ${location.pathname === "/deptdash" ? "active" : ""} text-black`}
+//                         >
+//                           Chair Dashboard
+//                         </Link>
+//                       </li>
+
+                      
+//                       <li className="nav-item">
+//                         <Link
+//                           to="/facultyranking"
+//                           className={`nav-link ${location.pathname === "/facultyranking" ? "active" : ""} text-black`}
+//                         >
+//                           Faculty Ranking
+//                         </Link>
+//                       </li>
+                      
+
+//                     </ul>
+
+//                   </div>
+//                 </div>
+
+//               </div>
+//             </div>
+
+//           </li>
+//         )}
+//       </ul>
+
+
+//       {/* LOGOUT */}
+//       <div className="sidebar-logout text-center mt-5">
+//         <button className="btn btn-danger w-75" onClick={handleLogout}>
+//           {!collapsed ? "Logout" : "X"}
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+// // =================== CHAIR ROUTE ===================
+// function ChairRoute({ children }) {
+//   const navigate = useNavigate();
+//   const [authorized, setAuthorized] = useState(null);
+
+//   useEffect(() => {
+//     checkAccess();
+//   }, []);
+
+//   const checkAccess = async () => {
+//     const { data: { user } } = await supabase.auth.getUser();
+//     if (!user) {
+//       navigate("/login");
+//       return;
+//     }
+
+//     const { data } = await supabase
+//       .from("profiles")
+//       .select("role")
+//       .eq("id", user.id)
+//       .single();
+
+//     if (data?.role === "chair") {
+//       setAuthorized(true);
+//     } else {
+//       navigate("/home");
+//     }
+//   };
+
+//   if (authorized === null) return <div>Checking access...</div>;
+//   return children;
+// }
+
+// function AppLayout() {
+//   const location = useLocation();
+//   const [collapsed, setCollapsed] = useState(false);
+
+//   // Define routes where the sidebar and main padding should not exist
+//   const hideSidebarRoutes = ["/", "/login"];
+//   const hideSidebar = hideSidebarRoutes.includes(location.pathname);
+
+//   return (
+//     // min-vh-100 ensures the background covers the full height
+//     // w-100 ensures it covers the full width
+//     <div className="d-flex min-vh-100 w-100">
+//       {!hideSidebar && (
+//         <Sidebar
+//           collapsed={collapsed}
+//           toggleSidebar={() => setCollapsed(!collapsed)}
+//         />
+//       )}
+
+//       {/* FIX: We use a template literal for className.
+//           If hideSidebar is true, we remove 'p-4' and 'main-content' styles 
+//           to allow the Signup/Login background to be truly full-screen.
+//       */}
+//       <div 
+//         className={`flex-grow-1 ${hideSidebar ? "" : "p-4 main-content"}`}
+//         style={{ width: hideSidebar ? "100%" : "auto" }}
+//       >
+//         <Suspense fallback={<div className="p-5 text-center">Loading...</div>}>
+//           <Routes>
+//             {/* AUTH PAGES */}
+//             <Route path="/" element={<SignUp />} />
+//             <Route path="/login" element={<Login />} />
+
+//             {/* DASHBOARD PAGES */}
+//             <Route path="/home" element={<Home />} />
+//             <Route path="/profile" element={<ProfilePage />} />
+            
+//             <Route path="/seminars" element={<Seminars />} />
+//             <Route path="/training" element={<TrainingsWorkshop />} />
+//             <Route path="/industrycert" element={<IndustryCertification />} />
+//             <Route path="/publications" element={<Publications />} />
+//             <Route path="/educ" element={<EducationalAttainment />} />
+
+//             {/* CHAIR ONLY ROUTES */}
+//             {/* <Route
+//               path="/skillCategory"
+//               element={
+//                 <ChairRoute>
+//                   <SkillCategory />
+//                 </ChairRoute>
+//               }
+//             /> */}
+
+//             <Route
+//               path="/scoring-config"
+//               element={
+//                 <ChairRoute>
+//                   <ScoringConfigPage />
+//                 </ChairRoute>
+//               }
+//             />
+            
+//             <Route
+//               path="/indskill"
+//               element={
+//                 <ChairRoute>
+//                   <SkillList />
+//                 </ChairRoute>
+//               }
+//             />
+
+//             <Route
+//               path="/facultyranking"
+//               element={
+//                 <ChairRoute>
+//                   <FacultyRanking />
+//                 </ChairRoute>
+//               }
+//             />
+
+//             <Route
+//               path="/deptdash"
+//               element={
+//                 <ChairRoute>
+//                   <SkillGapAnalysis />
+//                 </ChairRoute>
+//               }
+//             />
+//           </Routes>
+//         </Suspense>
+//       </div>
+//     </div>
+//   );
+// }
+
+// // =================== MAIN APP ===================
+// function App() {
+//   return (
+//     <Router>
+//       <AppLayout />
+//     </Router>
+//   );
+// }
+
+// export default App;
+
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useLocation,
-  useNavigate
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Link,
+    useLocation,
+    useNavigate
 } from "react-router-dom";
 import { Suspense, useEffect, useState } from 'react';
-
 import { supabase } from "./supabaseClient";
 
 // PAGES
@@ -17,7 +354,6 @@ import Login from './user/Login';
 import ProfilePage from './basicPages/Profile';
 import './index.css';
 import Home from './basicPages/FacultyMatch/Home';
-import SkillCategory from './basicPages/SkillCategory';
 import SkillList from './basicPages/SkillList';
 import Seminars from './Certifications/Seminars';
 import TrainingsWorkshop from './Certifications/TrainingWorkshop';
@@ -25,312 +361,271 @@ import IndustryCertification from './Certifications/IndustryCertifications';
 import Publications from './Publications/Publications';
 import EducationalAttainment from './EducationalAttainment/EducationalAttainment';
 import ScoringConfigPage from './ScoringWeight/ScoringConfigPage';
-// import DepartmentChairDashboard from './basicPages/FacultyMatch/DepartmentChairDashboard';
 import FacultyRanking from './basicPages/FacultyMatch/FacultyRanking';
 import SkillGapAnalysis from './basicPages/FacultyMatch/DepartmentChairDashboard';
+import NotFound from './basicPages/NotFound';
+import Spinner from 'react-bootstrap/Spinner';
 
-
-// =================== SIDEBAR ===================
+// ──────────────────────────────────────────────────────────────────────────────
+// SIDEBAR
+// ──────────────────────────────────────────────────────────────────────────────
 function Sidebar({ collapsed, toggleSidebar }) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [role, setRole] = useState(null);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [role, setRole] = useState(null);
 
-  useEffect(() => {
-    fetchUserRole();
-  }, []);
+    useEffect(() => {
+        fetchUserRole();
+    }, []);
 
-  const fetchUserRole = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    const fetchUserRole = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
 
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
+        const { data, error } = await supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", user.id)
+            .single();
 
-    if (!error) {
-      setRole(data.role);
-    }
-  };
+        if (!error) setRole(data.role);
+    };
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/login", { replace: true });
-  };
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        navigate("/login", { replace: true });
+    };
 
-  const menuItems = [
-    { name: "Home", path: "/home" },
-    { name: "Educational Attainment", path: "/educ" },
-    { name: "Seminar", path: "/seminars" },
-    { name: "Training/Workshop", path: "/training" },
-    { name: "Industry Certification", path: "/industrycert" },
-    { name: "Publication", path: "/publications" },
-    { name: "Profile", path: "/profile" }
-  ];
+    const menuItems = [
+        { name: "Dashboard", path: "/home", icon: "🏠" },
+        { name: "Educational Attainment", path: "/educ", icon: "🎓" },
+        { name: "Seminar", path: "/seminars", icon: "📋" },
+        { name: "Training / Workshop", path: "/training", icon: "🔧" },
+        { name: "Industry Certification", path: "/industrycert", icon: "🏅" },
+        { name: "Publication", path: "/publications", icon: "📄" },
+        { name: "Profile", path: "/profile", icon: "👤" },
+    ];
 
-  return (
-    <div
-      className={`d-flex flex-column sidebar ${collapsed ? "collapsed" : ""}`}
-    >
-      {/* LOGO / BRAND */}
-      <div className="sidebar-brand d-flex align-items-center justify-content-center py-4">
-        {!collapsed ? <h5 className="mb-0 fw-bold">SkillSync</h5> : <span>FP</span>}
-      </div>
+    const chairItems = [
+        { name: "Skills", path: "/indskill", icon: "🧠" },
+        { name: "Scoring Weight", path: "/scoring-config", icon: "⚖️" },
+        { name: "Chair Dashboard", path: "/deptdash", icon: "📊" },
+        { name: "Faculty Ranking", path: "/facultyranking", icon: "🏆" },
+    ];
 
-      {/* MENU */}
-      <ul className="nav flex-column">
-        {menuItems.map((item) => (
-          <li key={item.path} className="nav-item">
-            <Link
-              to={item.path}
-              className={`nav-link d-flex align-items-center ${
-                location.pathname === item.path ? "active" : ""
-              }`}
-            >
-              
-              {!collapsed && <span className="ms-2">{item.name}</span>}
-            </Link>
-          </li>
-        ))}
-
-        {role === "chair" && !collapsed && (
-          <li className="nav-item mt-3">
-            
-            <div className="accordion" id="chairAccordion">
-              
-              <div className="accordion-item border-0">
-                
-                {/* ACCORDION HEADER */}
-                <h2 className="accordion-header">
-                  <button
-                    className="accordion-button collapsed py-2"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#chairMenu"
-                  >
-                    Chair Functions
-                  </button>
-                </h2>
-
-                {/* ACCORDION BODY */}
-                <div
-                  id="chairMenu"
-                  className="accordion-collapse collapse"
-                  data-bs-parent="#chairAccordion"
-                >
-                  <div className="accordion-body p-0">
-
-                    <ul className="nav flex-column">
-
-                      {/* <li className="nav-item">
-                        <Link
-                          to="/skillCategory"
-                          className={`nav-link ${location.pathname === "/skillCategory" ? "active" : ""} text-black`}
-                        >
-                          Skill Category
-                        </Link>
-                      </li> */}
-
-                      <li className="nav-item">
-                        <Link
-                          to="/indskill"
-                          className={`nav-link ${location.pathname === "/indskill" ? "active" : ""} text-black`}
-                        >
-                          Skills
-                        </Link>
-                      </li>
-
-                      <li className="nav-item">
-                        <Link
-                          to="/scoring-config"
-                          className={`nav-link ${location.pathname === "/scoring-config" ? "active" : ""} text-black`}
-                        >
-                          Scoring Weight
-                        </Link>
-                      </li>
-
-
-                      <li className="nav-item">
-                        <Link
-                          to="/deptdash"
-                          className={`nav-link ${location.pathname === "/deptdash" ? "active" : ""} text-black`}
-                        >
-                          Chair Dashboard
-                        </Link>
-                      </li>
-
-                      
-                      <li className="nav-item">
-                        <Link
-                          to="/facultyranking"
-                          className={`nav-link ${location.pathname === "/facultyranking" ? "active" : ""} text-black`}
-                        >
-                          Faculty Ranking
-                        </Link>
-                      </li>
-                      
-
-                    </ul>
-
-                  </div>
-                </div>
-
-              </div>
+    return (
+        <div className={`d-flex flex-column sidebar ${collapsed ? "collapsed" : ""}`}>
+            {/* Brand */}
+            <div className="sidebar-brand d-flex align-items-center justify-content-center py-4">
+                {!collapsed ? (
+                    <div className="text-center">
+                        <h5 className="mb-0 fw-bold text-white">SkillSync</h5>
+                        <small className="text-secondary" style={{ fontSize: "0.65rem" }}>Faculty Profiling System</small>
+                    </div>
+                ) : (
+                    <span className="fw-bold text-white">SS</span>
+                )}
             </div>
 
-          </li>
-        )}
-      </ul>
+            {/* Main Menu */}
+            <ul className="nav flex-column px-2">
+                {menuItems.map(item => (
+                    <li key={item.path} className="nav-item">
+                        <Link
+                            to={item.path}
+                            className={`nav-link d-flex align-items-center gap-2 ${location.pathname === item.path ? "active" : ""}`}
+                        >
+                            <span className="nav-icon">{item.icon}</span>
+                            {!collapsed && <span>{item.name}</span>}
+                        </Link>
+                    </li>
+                ))}
+            </ul>
 
+            {/* Chair Functions — BUG FIX: Removed text-black; text is now readable on dark sidebar */}
+            {role === "chair" && !collapsed && (
+                <div className="px-2 mt-3">
+                    <div className="accordion" id="chairAccordion">
+                        <div className="accordion-item border-0" style={{ background: "transparent" }}>
+                            <h2 className="accordion-header">
+                                <button
+                                    className="accordion-button collapsed py-2 rounded"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#chairMenu"
+                                    style={{
+                                        /* ── BUG FIX: Use dark background + white text so it's visible ── */
+                                        background: "#374151",
+                                        color: "#e5e7eb",
+                                        fontSize: "0.9rem",
+                                        fontWeight: 600,
+                                        boxShadow: "none",
+                                    }}
+                                >
+                                    ⚙️ Chair Functions
+                                </button>
+                            </h2>
 
-      {/* LOGOUT */}
-      <div className="sidebar-logout text-center mt-5">
-        <button className="btn btn-danger w-75" onClick={handleLogout}>
-          {!collapsed ? "Logout" : "X"}
-        </button>
-      </div>
-    </div>
-  );
+                            <div
+                                id="chairMenu"
+                                className="accordion-collapse collapse"
+                                data-bs-parent="#chairAccordion"
+                            >
+                                <div className="accordion-body p-0 pt-1">
+                                    <ul className="nav flex-column">
+                                        {chairItems.map(item => (
+                                            <li key={item.path} className="nav-item">
+                                                <Link
+                                                    to={item.path}
+                                                    /* ── BUG FIX: Removed text-black; now uses sidebar's nav-link styling ── */
+                                                    className={`nav-link d-flex align-items-center gap-2 ${location.pathname === item.path ? "active" : ""}`}
+                                                >
+                                                    <span className="nav-icon">{item.icon}</span>
+                                                    <span>{item.name}</span>
+                                                </Link>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Spacer */}
+            <div className="flex-grow-1" />
+
+            {/* Logout */}
+            <div className="sidebar-logout text-center mb-3 px-2">
+                <button className="btn btn-danger w-100 rounded-pill fw-bold" onClick={handleLogout}>
+                    {!collapsed ? "🚪 Logout" : "X"}
+                </button>
+            </div>
+        </div>
+    );
 }
 
-
-// =================== CHAIR ROUTE ===================
+// ──────────────────────────────────────────────────────────────────────────────
+// CHAIR ROUTE GUARD
+// ──────────────────────────────────────────────────────────────────────────────
 function ChairRoute({ children }) {
-  const navigate = useNavigate();
-  const [authorized, setAuthorized] = useState(null);
+    const navigate = useNavigate();
+    const [authorized, setAuthorized] = useState(null);
 
-  useEffect(() => {
-    checkAccess();
-  }, []);
+    useEffect(() => {
+        checkAccess();
+    }, []);
 
-  const checkAccess = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      navigate("/login");
-      return;
+    const checkAccess = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) { navigate("/login"); return; }
+
+        const { data } = await supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", user.id)
+            .single();
+
+        if (data?.role === "chair") {
+            setAuthorized(true);
+        } else {
+            navigate("/home");
+        }
+    };
+
+    if (authorized === null) {
+        return (
+            <div className="d-flex align-items-center justify-content-center" style={{ minHeight: "60vh" }}>
+                <div className="text-center">
+                    <Spinner animation="border" variant="primary" className="mb-3" />
+                    <p className="text-muted small">Checking access...</p>
+                </div>
+            </div>
+        );
     }
 
-    const { data } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-
-    if (data?.role === "chair") {
-      setAuthorized(true);
-    } else {
-      navigate("/home");
-    }
-  };
-
-  if (authorized === null) return <div>Checking access...</div>;
-  return children;
+    return children;
 }
 
+// ──────────────────────────────────────────────────────────────────────────────
+// APP LAYOUT
+// ──────────────────────────────────────────────────────────────────────────────
 function AppLayout() {
-  const location = useLocation();
-  const [collapsed, setCollapsed] = useState(false);
+    const location = useLocation();
+    const [collapsed, setCollapsed] = useState(false);
 
-  // Define routes where the sidebar and main padding should not exist
-  const hideSidebarRoutes = ["/", "/login"];
-  const hideSidebar = hideSidebarRoutes.includes(location.pathname);
+    const hideSidebarRoutes = ["/", "/login"];
+    const hideSidebar = hideSidebarRoutes.includes(location.pathname);
 
-  return (
-    // min-vh-100 ensures the background covers the full height
-    // w-100 ensures it covers the full width
-    <div className="d-flex min-vh-100 w-100">
-      {!hideSidebar && (
-        <Sidebar
-          collapsed={collapsed}
-          toggleSidebar={() => setCollapsed(!collapsed)}
-        />
-      )}
+    return (
+        <div className="d-flex min-vh-100 w-100">
+            {!hideSidebar && (
+                <Sidebar
+                    collapsed={collapsed}
+                    toggleSidebar={() => setCollapsed(!collapsed)}
+                />
+            )}
 
-      {/* FIX: We use a template literal for className.
-          If hideSidebar is true, we remove 'p-4' and 'main-content' styles 
-          to allow the Signup/Login background to be truly full-screen.
-      */}
-      <div 
-        className={`flex-grow-1 ${hideSidebar ? "" : "p-4 main-content"}`}
-        style={{ width: hideSidebar ? "100%" : "auto" }}
-      >
-        <Suspense fallback={<div className="p-5 text-center">Loading...</div>}>
-          <Routes>
-            {/* AUTH PAGES */}
-            <Route path="/" element={<SignUp />} />
-            <Route path="/login" element={<Login />} />
+            <div
+                className={`flex-grow-1 ${hideSidebar ? "" : "p-4 main-content"}`}
+                style={{ width: hideSidebar ? "100%" : "auto" }}
+            >
+                <Suspense fallback={
+                    <div className="d-flex align-items-center justify-content-center" style={{ minHeight: "60vh" }}>
+                        <Spinner animation="border" variant="primary" />
+                    </div>
+                }>
+                    <Routes>
+                        {/* AUTH */}
+                        <Route path="/" element={<SignUp />} />
+                        <Route path="/login" element={<Login />} />
 
-            {/* DASHBOARD PAGES */}
-            <Route path="/home" element={<Home />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            
-            <Route path="/seminars" element={<Seminars />} />
-            <Route path="/training" element={<TrainingsWorkshop />} />
-            <Route path="/industrycert" element={<IndustryCertification />} />
-            <Route path="/publications" element={<Publications />} />
-            <Route path="/educ" element={<EducationalAttainment />} />
+                        {/* FACULTY ROUTES */}
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/seminars" element={<Seminars />} />
+                        <Route path="/training" element={<TrainingsWorkshop />} />
+                        <Route path="/industrycert" element={<IndustryCertification />} />
+                        <Route path="/publications" element={<Publications />} />
+                        <Route path="/educ" element={<EducationalAttainment />} />
 
-            {/* CHAIR ONLY ROUTES */}
-            {/* <Route
-              path="/skillCategory"
-              element={
-                <ChairRoute>
-                  <SkillCategory />
-                </ChairRoute>
-              }
-            /> */}
+                        {/* CHAIR ONLY ROUTES */}
+                        <Route
+                            path="/scoring-config"
+                            element={<ChairRoute><ScoringConfigPage /></ChairRoute>}
+                        />
+                        <Route
+                            path="/indskill"
+                            element={<ChairRoute><SkillList /></ChairRoute>}
+                        />
+                        <Route
+                            path="/facultyranking"
+                            element={<ChairRoute><FacultyRanking /></ChairRoute>}
+                        />
+                        <Route
+                            path="/deptdash"
+                            element={<ChairRoute><SkillGapAnalysis /></ChairRoute>}
+                        />
 
-            <Route
-              path="/scoring-config"
-              element={
-                <ChairRoute>
-                  <ScoringConfigPage />
-                </ChairRoute>
-              }
-            />
-            
-            <Route
-              path="/indskill"
-              element={
-                <ChairRoute>
-                  <SkillList />
-                </ChairRoute>
-              }
-            />
-
-            <Route
-              path="/facultyranking"
-              element={
-                <ChairRoute>
-                  <FacultyRanking />
-                </ChairRoute>
-              }
-            />
-
-            <Route
-              path="/deptdash"
-              element={
-                <ChairRoute>
-                  <SkillGapAnalysis />
-                </ChairRoute>
-              }
-            />
-          </Routes>
-        </Suspense>
-      </div>
-    </div>
-  );
+                        {/* ── FEATURE: 404 catch-all route ── */}
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </Suspense>
+            </div>
+        </div>
+    );
 }
 
-// =================== MAIN APP ===================
+// ──────────────────────────────────────────────────────────────────────────────
+// MAIN APP
+// ──────────────────────────────────────────────────────────────────────────────
 function App() {
-  return (
-    <Router>
-      <AppLayout />
-    </Router>
-  );
+    return (
+        <Router>
+            <AppLayout />
+        </Router>
+    );
 }
 
 export default App;
